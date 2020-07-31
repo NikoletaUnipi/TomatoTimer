@@ -1,36 +1,84 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8">
-<title>Timer</title>
-<link rel="stylesheet" type="text/css" href="mystyle.css">
-</head>
-<body>
-<div id="container0">
-	<div id="counter">0</div>
-	<img src="tomato.png" id="tomatoIcon">
-</div>
-<div class="container">
+//mostly functional
+//instanciating variables
+var seconds = 1500;
+//state
+var state = false;
+//
+var notABreak = true;
+//count the tomatos
+var counter = 0;
 
-<p id="demo">25 : 00</p>
-<div id="buttons">
-<button id="startBtn">Start</button>
-<button id="stopBtn"> Stop</button>
+//get elements from html
+document.getElementById("stopBtn").addEventListener('click',StopIt,false);
+document.getElementById("startBtn").addEventListener('click',Start,false);
+document.getElementById("tomato").addEventListener('click',setTo25,false);
+document.getElementById("shortBreak").addEventListener('click',setTo5,false);
+document.getElementById("longBreak").addEventListener('click',setTo10,false);
 
-</div>
-<div id="options">
-	<button id="tomato">Tomato</button>
-	<button id="shortBreak">Short Break</button>
-	<button id="longBreak">Long Break</button>
-</div>
-</div>
-<div class="container2">
-<p>This is a project that was made in order to help people with time management, using the <span id="pomodoro">pomodoro</span> technique.</p>
-<hr>
-</div>
-<script src="inter.js"></script>
-<script src="styling.js"></script>
-</body>
 
-</html>
+//Counting_Down repeats every second
+var loop = setInterval(Counting_Down,1000);
+
+//functions
+
+//time loop throw a function
+function Counting_Down(){
+	if(state){	//if start if choosen
+		Show(seconds);//time gets updated
+		seconds--;//seconds reduced by 1
+		increaseTomatos();
+	}
+}
+
+//show in doc
+function Show(sec){
+	//Calculate time
+	var seconds = sec%60;
+	var minutes = Math.floor(sec/60);
+	document.getElementById("demo").innerHTML = minutes + " : " + seconds;
+	
+}
+
+//stops contdown
+function StopIt(){
+	state = false;
+}
+
+//start
+function Start(){
+	state=true;
+}
+
+
+//tomato
+function setTo25(){
+	seconds = 1500;
+	notABreak = true;
+	state = true;
+	document.getElementById("demo").innerHTML = "25 : 00";
+}
+//short break
+function setTo5(){
+	seconds = 300;
+	state = true;
+	notABreak = false;
+	document.getElementById("demo").innerHTML = "05 : 00";
+}
+
+//long break
+function setTo10(){
+	seconds = 600;
+	state = true;
+	notABreak = false;
+	document.getElementById("demo").innerHTML = "10: 00";
+}
+
+function increaseTomatos(){
+	if(seconds<0){
+		if(notABreak){
+		counter++;
+		document.getElementById("counter").innerHTML = counter;
+		}
+		StopIt();
+	}
+}
